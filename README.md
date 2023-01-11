@@ -27,15 +27,8 @@ You can test the endpoints using a tool like Postman or Curl
 ## Built With
 
 * [Spring Boot](https://spring.io/projects/spring-boot) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/username/my-spring-boot-api/tags). 
+* [Maven](https://maven.apache.org/) - Dependency Management 
+* [MySQL](https://www.mysql.com/) - Local Database
 
 ## Authors
 
