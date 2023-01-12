@@ -2,6 +2,6 @@ package com.nology.SpringBootAPI;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface StudentRepository extends JpaRepository<Student,Long> {
+public interface JobRepository extends JpaRepository<Job,Long> {
 	
 }

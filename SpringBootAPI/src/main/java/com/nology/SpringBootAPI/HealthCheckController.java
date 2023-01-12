@@ -10,6 +10,6 @@ public class HealthCheckController {
 
 	@GetMapping
 	public String test() {
-		return "Hello World";
+		return "This is a SpringBoot framework API";
 	}
 }
