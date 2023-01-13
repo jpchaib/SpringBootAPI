@@ -1,4 +1,4 @@
-package com.nology.SpringBootAPI;
+package com.nology.SpringBootAPI.temp;
 
 import java.util.List;
 import java.util.Map;
@@ -17,27 +17,27 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/jobs")
-public class JobController {
+@RequestMapping(value = "/temps")
+public class TempController {
 	@Autowired
-	private JobService jobService;
+	private TempService tempService;
 	
 	@GetMapping
-	public List<Job> getJobs() {
-		return jobService.all();
+	public List<Temp> getTemps() {
+		return tempService.all();
 	}
 	
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void saveJob(@Valid @RequestBody CreateJobDTO jobDTO) {
-		jobService.create(jobDTO);
+	public void saveTemp(@Valid @RequestBody CreateTempDTO tempDTO) {
+		tempService.create(tempDTO);
 	}
 	
-	@PatchMapping("/{id}")
-	@ResponseStatus(value = HttpStatus.ACCEPTED)
-	public void updateJob(@PathVariable Long id, @Valid @RequestBody UpdateJobDTO jobDTO) {
-		jobService.update(id, jobDTO);
-	}
+//	@PatchMapping("/{id}")
+//	@ResponseStatus(value = HttpStatus.ACCEPTED)
+//	public void updateJob(@PathVariable Long id, @Valid @RequestBody UpdateJobDTO jobDTO) {
+//		jobService.update(id, jobDTO);
+//	}
 	
 	
 }

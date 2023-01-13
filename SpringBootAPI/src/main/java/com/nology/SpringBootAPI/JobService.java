@@ -23,23 +23,14 @@ public class JobService {
 		jobRepository.save(j);
 	}
 	
-	public void update(Long id, Map<String, UpdateJobDTO> data) {
+	public void update(Long id, UpdateJobDTO data) {
 		Optional<Job> j = jobRepository.findById(id);
 		
 		j.ifPresent(jobMaybe -> {
-			if(data.containsKey("name")) {
-				jobMaybe.setName(((Job) data).getName());
-			};
-			if(data.containsKey("name")) {
-				jobMaybe.setStartDate(((Job) data).getStartDate());
-			};
-			if(data.containsKey("name")) {
-				jobMaybe.setEndDate(((Job) data).getEndDate());
-			};
-			if(data.containsKey("name")) {
-				jobMaybe.setName(((Job) data).getName());
-			};
-		
+			jobMaybe.setName(data.getName());
+			jobMaybe.setStartDate(data.getStartDate());
+			jobMaybe.setEndDate(data.getEndDate());
+			jobMaybe.setName(data.getName());
 		});
 	}
 	

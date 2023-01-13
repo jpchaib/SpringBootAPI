@@ -13,7 +13,7 @@ public class Job {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	private String name;
-	private Date startDate;
+	private Date startDate;                        
 	private Date endDate;
 //	private Temp temp;
 	
