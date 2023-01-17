@@ -1,16 +1,15 @@
 package com.nology.SpringBootAPI.temp;
 
 import java.util.Date;
+import java.util.List;
 
 import jakarta.validation.constraints.NotNull;
 
 public class UpdateTempDTO {
 	
-	@NotNull
 	private String firstName;
-	@NotNull
 	private String lastName;
-
+	private List<Long> jobsId;
 	
 	public String getFirstName() {
 		return firstName;
@@ -24,5 +23,11 @@ public class UpdateTempDTO {
 	}
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
+	}
+	public List<Long> getJobsId() {
+		return jobsId;
+	}
+	public void setJobsId(List<Long> jobsId) {
+		this.jobsId = jobsId;
 	}
 }

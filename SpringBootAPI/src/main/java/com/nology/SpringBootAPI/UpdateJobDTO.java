@@ -12,6 +12,7 @@ public class UpdateJobDTO {
 	private Date startDate;
 	@NotNull
 	private Date endDate;
+	private Long tempId;
 	
 	public String getName() {
 		return name;
@@ -32,6 +33,12 @@ public class UpdateJobDTO {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public Long getTempId() {
+		return tempId;
+	}
+	public void setTempId(Long tempId) {
+		this.tempId = tempId;
 	}
 	
 }

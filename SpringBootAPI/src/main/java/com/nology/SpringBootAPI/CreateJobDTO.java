@@ -2,6 +2,7 @@ package com.nology.SpringBootAPI;
 
 import java.util.Date;
 
+
 import jakarta.validation.constraints.NotNull;
 
 public class CreateJobDTO {
@@ -12,6 +13,7 @@ public class CreateJobDTO {
 	private Date startDate;
 	@NotNull
 	private Date endDate;
+	private Long tempId;
 	
 	public String getName() {
 		return name;
@@ -32,5 +34,11 @@ public class CreateJobDTO {
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
+	}
+	public Long getTempId() {
+		return tempId;
+	}
+	public void setTemp(Long tempId) {
+		this.tempId = tempId;
 	}
 }
