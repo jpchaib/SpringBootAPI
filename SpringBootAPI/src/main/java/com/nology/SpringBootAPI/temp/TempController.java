@@ -2,6 +2,7 @@ package com.nology.SpringBootAPI.temp;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nology.SpringBootAPI.Job;
 
 import jakarta.validation.Valid;
 
@@ -26,8 +27,17 @@ public class TempController {
 	private TempService tempService;
 	
 	@GetMapping
-	public List<Temp> getTemps() {
-		return tempService.all();
+	public List<Temp> getTemps(@RequestParam(value = "jobId", required = false) Long jobId) {
+		if(jobId != null) {
+			List<Temp> list = tempService.all().stream()
+                    .filter(temp -> temp.getJobs().stream()
+                            		.anyMatch(job -> job.getId().equals(jobId)))
+                    .collect(Collectors.toList());
+			
+			return list;
+		} else {	
+			return tempService.all();
+		}		
 	}
 	
 	@GetMapping("/{id}")
@@ -48,8 +58,16 @@ public class TempController {
 	
 	@PatchMapping("/{id}")
 	@ResponseStatus(value = HttpStatus.ACCEPTED)
-	public void updateJob(@PathVariable Long id, @Valid @RequestBody UpdateTempDTO tempDTO) {
-		tempService.update(id, tempDTO);
+	public ResponseEntity<Temp> updateTemp(@PathVariable Long id, @Valid @RequestBody UpdateTempDTO tempDTO) {
+		
+		Optional<Temp> optionalTemp = tempService.getTempById(id);
+		if (optionalTemp.isPresent()) {
+			tempService.update(id, tempDTO);
+	        return ResponseEntity.ok(optionalTemp.get());
+
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 	
 	

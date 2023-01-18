@@ -19,15 +19,12 @@ public class JobService {
 	@Autowired
 	private TempRepository tempRepository;
 	
-	
-	
 	public List<Job> all() {
 		return jobRepository.findAll();
 	}
 	
 	public Optional<Job> getJobById(Long id) {
 		return jobRepository.findById(id);
-	
 	}
 	
 	public void create(CreateJobDTO job) {

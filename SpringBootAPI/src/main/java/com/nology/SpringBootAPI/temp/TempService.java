@@ -27,18 +27,12 @@ public class TempService {
 	
 	public Optional<Temp> getTempById(Long id) {
 		return tempRepository.findById(id);
-	
 	}
 	
 	public void create(CreateTempDTO temp) {
 		Temp t = new Temp(); 
 		t.setFirstName(temp.getFirstName());
 		t.setLastName(temp.getLastName());
-		if(temp.getJobsId() != null) {
-			List<Long> jobsId = temp.getJobsId();
-			List<Job> jobs = jobsId.stream().map(jobId -> jobRepository.findById(jobId).get()).collect(Collectors.toList());
-			t.setJobs(jobs);
-		}
 		tempRepository.save(t);
 	}
 	

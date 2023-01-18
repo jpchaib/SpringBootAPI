@@ -2,15 +2,12 @@ package com.nology.SpringBootAPI;
 
 import java.util.Date;
 
-import jakarta.validation.constraints.NotNull;
 
 public class UpdateJobDTO {
 	
-	@NotNull
+
 	private String name;
-	@NotNull
 	private Date startDate;
-	@NotNull
 	private Date endDate;
 	private Long tempId;
 	
@@ -29,7 +26,7 @@ public class UpdateJobDTO {
 	}
 	
 	public Date getEndDate() {
-		return startDate;
+		return endDate;
 	}
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;

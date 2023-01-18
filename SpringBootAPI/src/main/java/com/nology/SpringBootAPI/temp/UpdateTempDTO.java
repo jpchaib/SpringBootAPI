@@ -1,9 +1,8 @@
 package com.nology.SpringBootAPI.temp;
 
-import java.util.Date;
+
 import java.util.List;
 
-import jakarta.validation.constraints.NotNull;
 
 public class UpdateTempDTO {
 	

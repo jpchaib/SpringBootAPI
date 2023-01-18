@@ -3,8 +3,11 @@ package com.nology.SpringBootAPI.temp;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nology.SpringBootAPI.Job;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,8 +21,9 @@ public class Temp {
 	private Long id;
 	private String firstName;
 	private String lastName;
+	
 	@OneToMany(mappedBy = "temp")
-    @JsonBackReference
+    @JsonIgnoreProperties(value = {"temp"})
     private List<Job> jobs;
 	
 	public Temp() {}

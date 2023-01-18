@@ -2,6 +2,7 @@ package com.nology.SpringBootAPI;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,11 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.nology.SpringBootAPI.temp.Temp;
-import com.nology.SpringBootAPI.temp.TempService;
 
 import jakarta.validation.Valid;
 
@@ -27,8 +27,21 @@ public class JobController {
 	private JobService jobService;
 	
 	@GetMapping
-	public List<Job> getJobs() {
-		return jobService.all();
+	public List<Job> getJobs(@RequestParam(value = "assigned", required = false) Boolean assigned) {
+		if(assigned != null && assigned == true) {
+			List<Job> list = jobService.all().stream()
+					.filter(job -> job.getTemp() != null)
+					.collect(Collectors.toList());
+			return list;
+		} else if(assigned != null && assigned == false) {
+			List<Job> list = jobService.all().stream()
+					.filter(job -> job.getTemp() == null)
+					.collect(Collectors.toList());
+			return list;
+		} else {
+			
+			return jobService.all();
+		}	
 	}
 	
 	@GetMapping("/{id}")
@@ -53,7 +66,7 @@ public class JobController {
 		
 		Optional<Job> optionalJob = jobService.getJobById(id);
 		if (optionalJob.isPresent()) {
-			
+			jobService.update(id, jobDTO);
 	        return ResponseEntity.ok(optionalJob.get());
 
 	    } else {

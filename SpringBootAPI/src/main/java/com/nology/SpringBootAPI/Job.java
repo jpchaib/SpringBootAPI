@@ -2,7 +2,8 @@ package com.nology.SpringBootAPI;
 
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.nology.SpringBootAPI.temp.Temp;
 
@@ -24,6 +25,7 @@ public class Job {
 	
 	@ManyToOne
     @JsonManagedReference
+    @JsonIgnoreProperties(value = {"jobs"})
 	private Temp temp;
 	
 	public Job() {}
