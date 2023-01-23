@@ -9,8 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.nology.SpringBootAPI.Job;
-import com.nology.SpringBootAPI.JobRepository;
+import com.nology.SpringBootAPI.job.Job;
+import com.nology.SpringBootAPI.job.JobRepository;
 
 @Service
 @Transactional

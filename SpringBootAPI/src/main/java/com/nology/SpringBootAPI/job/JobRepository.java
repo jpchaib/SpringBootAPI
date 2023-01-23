@@ -1,4 +1,4 @@
-package com.nology.SpringBootAPI;
+package com.nology.SpringBootAPI.job;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
