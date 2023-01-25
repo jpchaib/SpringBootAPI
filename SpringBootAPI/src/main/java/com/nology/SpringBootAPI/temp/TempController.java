@@ -2,7 +2,6 @@ package com.nology.SpringBootAPI.temp;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +26,16 @@ public class TempController {
 	private TempService tempService;
 	
 	@GetMapping
-	public List<Temp> getTemps(@RequestParam(value = "jobId", required = false) Long jobId) {
+	public ResponseEntity<List<Temp>> getTemps(@RequestParam(value = "jobId", required = false) Long jobId) {
 		if(jobId != null) {
-			List<Temp> list = tempService.all().stream()
-                    .filter(temp -> temp.getJobs().stream()
-                            		.anyMatch(job -> job.getId().equals(jobId)))
-                    .collect(Collectors.toList());
-			
-			return list;
+			List<Temp> list = tempService.checkJobs(jobId);
+			if(list.size() == 0) {
+				return ResponseEntity.noContent().build();
+			} else {
+				return ResponseEntity.ok(list);
+			}
 		} else {	
-			return tempService.all();
+			return ResponseEntity.ok(tempService.all());
 		}		
 	}
 	
@@ -49,7 +48,7 @@ public class TempController {
 			return ResponseEntity.notFound().build();
 		}
 	} 
-	
+	 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public void saveTemp(@Valid @RequestBody CreateTempDTO tempDTO) {
@@ -62,9 +61,13 @@ public class TempController {
 		
 		Optional<Temp> optionalTemp = tempService.getTempById(id);
 		if (optionalTemp.isPresent()) {
-			tempService.update(id, tempDTO);
-	        return ResponseEntity.ok(optionalTemp.get());
-
+			try {
+				tempService.update(id, tempDTO);
+				return ResponseEntity.ok(optionalTemp.get());
+			} catch (Exception e) {
+				return ResponseEntity.badRequest().header(e.getMessage()).build();
+			}
+	        
 	    } else {
 	        return ResponseEntity.notFound().build();
 	    }

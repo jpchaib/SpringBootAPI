@@ -2,7 +2,7 @@ package com.nology.SpringBootAPI.job;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,18 +28,9 @@ public class JobController {
 	
 	@GetMapping
 	public List<Job> getJobs(@RequestParam(value = "assigned", required = false) Boolean assigned) {
-		if(assigned != null && assigned == true) {
-			List<Job> list = jobService.all().stream()
-					.filter(job -> job.getTemp() != null)
-					.collect(Collectors.toList());
-			return list;
-		} else if(assigned != null && assigned == false) {
-			List<Job> list = jobService.all().stream()
-					.filter(job -> job.getTemp() == null)
-					.collect(Collectors.toList());
-			return list;
+		if(assigned != null) {
+			return jobService.isAssigned(assigned);
 		} else {
-			
 			return jobService.all();
 		}	
 	}
@@ -56,8 +47,12 @@ public class JobController {
 	
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public void saveJob(@Valid @RequestBody CreateJobDTO jobDTO) {
-		jobService.create(jobDTO);
+	public ResponseEntity<Job> saveJob(@Valid @RequestBody CreateJobDTO jobDTO) {
+	    try {
+	        return ResponseEntity.ok(jobService.create(jobDTO));
+	    } catch (Exception e) {
+	    	 return ResponseEntity.badRequest().header(e.getMessage()).build();
+	    }
 	}
 	
 	@PatchMapping("/{id}")

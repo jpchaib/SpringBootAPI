@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.nology.SpringBootAPI.job.Job;
-import com.nology.SpringBootAPI.job.JobRepository;
+import com.nology.SpringBootAPI.job.JobService;
 
 @Service
 @Transactional
@@ -18,8 +18,8 @@ public class TempService {
 	
 	@Autowired
 	private TempRepository tempRepository;
-	@Autowired
-	private JobRepository jobRepository;
+
+	private JobService jobService;
 	
 	public List<Temp> all() {
 		return tempRepository.findAll();
@@ -36,18 +36,38 @@ public class TempService {
 		tempRepository.save(t);
 	}
 	
-	public void update(Long id, UpdateTempDTO data) {
-		Optional<Temp> t = tempRepository.findById(id);
+	public void update(Long id, UpdateTempDTO data) throws Exception {
 		
+		Optional<Temp> t = tempRepository.findById(id);
+				
 		t.ifPresent(tempMaybe -> {
 			tempMaybe.setFirstName(data.getFirstName());
 			tempMaybe.setLastName(data.getLastName());
 			if(data.getJobsId() != null) {
 				List<Long> jobsId = data.getJobsId();
-				List<Job> jobs = jobsId.stream().map(jobId -> jobRepository.findById(jobId).get()).collect(Collectors.toList());
+				List<Job> jobs = jobsId.stream().map(jobId -> jobService.getJobById(jobId).get()).collect(Collectors.toList());
+				
+				for(Job job : jobs ) {
+					for(Job tempJob : tempMaybe.getJobs()) {
+						if(tempJob.getStartDate().compareTo(job.getStartDate()) < 0
+						&& job.getStartDate().compareTo(tempJob.getEndDate()) < 0
+						|| tempJob.getStartDate().compareTo(job.getEndDate()) < 0
+						&& job.getEndDate().compareTo(tempJob.getEndDate()) < 0 ) {
+							throw new Exception("Assigned job's dates conflicts");
+						}
+					}
+				}
 				tempMaybe.setJobs(jobs);
 			}
 		});
+	}
+	
+	public List<Temp> checkJobs(Long jobId) {
+		List<Temp> list = tempRepository.findAll().stream()
+                		.filter(temp -> temp.getJobs().stream()
+                				.anyMatch(job -> job.getId().equals(jobId)))
+                		.collect(Collectors.toList());
+		return list;
 	}
 	
 	
