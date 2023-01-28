@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.nology.SpringBootAPI.job.Job;
 
 import jakarta.validation.Valid;
 
@@ -72,6 +73,12 @@ public class TempController {
 	        return ResponseEntity.notFound().build();
 	    }
 	}
+	
+	@GetMapping("/test")
+	public boolean getTheTemp() {
+		return tempService.test();
+		
+	} 
 	
 	
 }

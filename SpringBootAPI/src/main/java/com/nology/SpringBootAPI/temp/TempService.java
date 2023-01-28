@@ -1,5 +1,6 @@
 package com.nology.SpringBootAPI.temp;
 
+import java.util.Date;
 import java.util.List;
 
 import java.util.Optional;
@@ -47,16 +48,6 @@ public class TempService {
 				List<Long> jobsId = data.getJobsId();
 				List<Job> jobs = jobsId.stream().map(jobId -> jobService.getJobById(jobId).get()).collect(Collectors.toList());
 				
-				for(Job job : jobs ) {
-					for(Job tempJob : tempMaybe.getJobs()) {
-						if(tempJob.getStartDate().compareTo(job.getStartDate()) < 0
-						&& job.getStartDate().compareTo(tempJob.getEndDate()) < 0
-						|| tempJob.getStartDate().compareTo(job.getEndDate()) < 0
-						&& job.getEndDate().compareTo(tempJob.getEndDate()) < 0 ) {
-							throw new Exception("Assigned job's dates conflicts");
-						}
-					}
-				}
 				tempMaybe.setJobs(jobs);
 			}
 		});
@@ -69,6 +60,12 @@ public class TempService {
                 		.collect(Collectors.toList());
 		return list;
 	}
+	
+	public boolean test() {
+		return tempRepository.checkDates(1, new Date(0), new Date(0));
+		
+	}
+	
 	
 	
 }
